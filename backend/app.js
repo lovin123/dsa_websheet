@@ -7,20 +7,16 @@ const connectDB = require("./config/mongo");
 
 const path = require("path");
 const app = express();
-const allowedOrigins = ["http://13.201.28.217", "http://13.201.28.217:5000"];
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+app.use(cors());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  next();
+});
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
