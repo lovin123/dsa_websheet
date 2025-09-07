@@ -1,3 +1,11 @@
+export async function fetchProgressStats(token) {
+  const res = await fetch(`${API_BASE}/dsa/progress/stats`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Failed to fetch progress stats");
+  return data;
+}
 // Centralized API service for frontend-backend communication
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 

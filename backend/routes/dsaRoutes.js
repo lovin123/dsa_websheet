@@ -53,5 +53,6 @@ router.post(
   dsaController.markProblemCompleted
 );
 router.get("/progress", auth, dsaController.getUserProgress);
+router.get("/progress/stats", auth, dsaController.getProgressStats);
 
 module.exports = router;

@@ -1,7 +1,6 @@
 const Chapter = require("../models/Chapter");
 const Topic = require("../models/Topic");
 const Problem = require("../models/Problem");
-const User = require("../models/User");
 const Progress = require("../models/Progress");
 
 exports.getDSASheet = async (req, res) => {
@@ -185,5 +184,22 @@ exports.getUserProgress = async (req, res) => {
     res.json(progress);
   } catch (err) {
     res.status(400).json({ error: err.message || "Failed to get progress" });
+  }
+};
+
+// Progress Stats API
+exports.getProgressStats = async (req, res) => {
+  try {
+    const userId = req.user;
+    const totalProblems = await Problem.countDocuments();
+    const completedCount = await Progress.countDocuments({
+      user: userId,
+      completed: true,
+    });
+    res.json({ completed: completedCount, total: totalProblems });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ error: err.message || "Failed to get progress stats" });
   }
 };

@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import DSASheet from "./pages/DSASheet";
+import Progress from "./pages/Progress";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -41,6 +42,14 @@ function App() {
           element={
             <PrivateRoute>
               <DSASheet />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/progress"
+          element={
+            <PrivateRoute>
+              <Progress />
             </PrivateRoute>
           }
         />

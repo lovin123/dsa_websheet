@@ -3,27 +3,11 @@ import {
   Container,
   Typography,
   Paper,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Chip,
-  Checkbox,
-  Link as MuiLink,
   Box,
-  IconButton,
   Snackbar,
   Alert,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import ArticleIcon from "@mui/icons-material/Article";
-import CodeIcon from "@mui/icons-material/Code";
+import ChapterAccordion from "../components/ChapterAccordion";
 import { fetchDSASheet, fetchProgress, updateProgress } from "../api";
 
 export default function DSASheet() {
@@ -80,129 +64,100 @@ export default function DSASheet() {
     }
   };
   return (
-    <Container maxWidth="md" sx={{ mt: 8 }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        DSA Sheet
-      </Typography>
-      <Paper sx={{ p: 3, mt: 2 }}>
-        <Snackbar
-          open={open}
-          autoHideDuration={4000}
-          onClose={() => setOpen(false)}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+    <Box
+      sx={{
+        minHeight: "100vh",
+        width: "100vw",
+        background: "linear-gradient(120deg, #e3f2fd 0%, #f8bbd0 100%)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        pb: 8,
+        pt: 0,
+        position: "relative",
+        overflowX: "hidden",
+      }}
+    >
+      <Container
+        maxWidth="md"
+        sx={{
+          mt: 10,
+          mb: 6,
+          px: { xs: 1, sm: 2 },
+          py: 2,
+          background: "rgba(255,255,255,0.85)",
+          borderRadius: 6,
+          boxShadow: "0 4px 32px 0 rgba(60,120,180,0.10)",
+          backdropFilter: "blur(2px)",
+        }}
+      >
+        <Typography
+          variant="h3"
+          align="center"
+          fontWeight={700}
+          color="primary.main"
+          gutterBottom
+          sx={{
+            textShadow: "0 2px 8px rgba(60,120,180,0.10)",
+            mb: 2,
+            letterSpacing: 2,
+            fontFamily: "Montserrat, Roboto, Arial",
+            animation: "fadeInDown 1s",
+          }}
         >
-          <Alert
+          DSA Sheet
+        </Typography>
+        <Paper
+          elevation={6}
+          sx={{
+            p: 4,
+            mt: 2,
+            borderRadius: 4,
+            background: "linear-gradient(135deg, #e3f2fd 0%, #fff 100%)",
+            boxShadow: "0 8px 32px 0 rgba(60, 120, 180, 0.15)",
+            animation: "fadeInUp 1s",
+          }}
+        >
+          <Snackbar
+            open={open}
+            autoHideDuration={4000}
             onClose={() => setOpen(false)}
-            severity="error"
-            sx={{ width: "100%" }}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
           >
-            {error}
-          </Alert>
-        </Snackbar>
-        {sheet.length === 0 ? (
-          <Typography align="center">Loading...</Typography>
-        ) : (
-          sheet.map((chapter) => (
-            <Accordion key={chapter._id} sx={{ mb: 2 }}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="h6">{chapter.name}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {chapter.topics.map((topic) => (
-                  <Box key={topic._id} sx={{ mb: 2 }}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                      {topic.name}
-                    </Typography>
-                    <TableContainer>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Problem</TableCell>
-                            <TableCell>Difficulty</TableCell>
-                            <TableCell>LeetCode</TableCell>
-                            <TableCell>Article</TableCell>
-                            <TableCell>YouTube</TableCell>
-                            <TableCell>Progress</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {topic.problems.map((problem) => (
-                            <TableRow key={problem._id}>
-                              <TableCell>{problem.name}</TableCell>
-                              <TableCell>
-                                <Chip
-                                  label={problem.level}
-                                  color={
-                                    problem.level === "Easy"
-                                      ? "success"
-                                      : problem.level === "Medium"
-                                      ? "warning"
-                                      : "error"
-                                  }
-                                  size="small"
-                                  sx={{ ml: 1 }}
-                                />
-                              </TableCell>
-                              <TableCell>
-                                {problem.leetcodeLink && (
-                                  <IconButton
-                                    component={MuiLink}
-                                    href={problem.leetcodeLink}
-                                    target="_blank"
-                                    rel="noopener"
-                                  >
-                                    <CodeIcon color="primary" />
-                                  </IconButton>
-                                )}
-                              </TableCell>
-                              <TableCell>
-                                {problem.articleLink && (
-                                  <IconButton
-                                    component={MuiLink}
-                                    href={problem.articleLink}
-                                    target="_blank"
-                                    rel="noopener"
-                                  >
-                                    <ArticleIcon color="action" />
-                                  </IconButton>
-                                )}
-                              </TableCell>
-                              <TableCell>
-                                {problem.youtubeLink && (
-                                  <IconButton
-                                    component={MuiLink}
-                                    href={problem.youtubeLink}
-                                    target="_blank"
-                                    rel="noopener"
-                                  >
-                                    <YouTubeIcon color="error" />
-                                  </IconButton>
-                                )}
-                              </TableCell>
-                              <TableCell>
-                                <Checkbox
-                                  checked={progress.has(problem._id)}
-                                  onChange={(e) =>
-                                    handleProgress(
-                                      problem._id,
-                                      e.target.checked
-                                    )
-                                  }
-                                  color="primary"
-                                />
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </Box>
-                ))}
-              </AccordionDetails>
-            </Accordion>
-          ))
-        )}
-      </Paper>
-    </Container>
+            <Alert
+              onClose={() => setOpen(false)}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              {error}
+            </Alert>
+          </Snackbar>
+          {sheet.length === 0 ? (
+            <Typography align="center">Loading...</Typography>
+          ) : (
+            sheet.map((chapter) => (
+              <ChapterAccordion
+                key={chapter._id}
+                chapter={chapter}
+                progress={progress}
+                handleProgress={handleProgress}
+              />
+            ))
+          )}
+        </Paper>
+      </Container>
+      {/* Keyframes for fadeIn animations */}
+      <style>{`
+        @keyframes fadeInDown {
+          0% { opacity: 0; transform: translateY(-40px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+          0% { opacity: 0; transform: translateY(40px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+    </Box>
   );
 }
