@@ -7,9 +7,17 @@ const connectDB = require("./config/mongo");
 
 const path = require("path");
 const app = express();
+const allowedOrigins = ["http://13.201.28.217", "http://13.201.28.217:5000"];
+
 app.use(
   cors({
-    origin: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
