@@ -7,7 +7,12 @@ const connectDB = require("./config/mongo");
 
 const path = require("path");
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
