@@ -9,9 +9,15 @@ const path = require("path");
 const app = express();
 app.use(
   cors({
-    origin: "*",
+    origin: "http://13.201.28.217:5000",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
+
+// 👇 This ensures Express responds to preflight OPTIONS requests
+app.options("*", cors());
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
