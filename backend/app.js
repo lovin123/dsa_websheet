@@ -9,8 +9,7 @@ const path = require("path");
 const app = express();
 app.use(
   cors({
-    origin: "*", // allows all origins
-    credentials: true, // allows cookies/auth headers
+    origin: "*",
   })
 );
 app.use(express.json());
